@@ -1,0 +1,42 @@
+﻿@model IEnumerable<FS02P2.Models.SchoolViewModels.UserRolesData>
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1 class="mt-3">Users </h1>
+
+@foreach (var item in Model)
+{
+    <div class="row container-fluid">
+        <div class="card col-md-3 mb-3">
+            <div class="card-body">
+
+                <h5 class="card-title"> User Name: @item.UserName</h5>
+                <h6 class="card-subtitle mb-2 text-muted">First Name : @item.FirstName</h6>
+                <h6 class="card-subtitle mb-2 text-muted">Last Name : @item.LastName</h6>
+
+                <p class="card-text">Email: @item.Email</p>
+            </div>
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item">
+                    @foreach (var role in item.Roles)
+                    {
+                        @role
+
+                        <br />
+
+
+                    }
+
+                </li>
+                <a class="btn btn-sm  btn-warning w-50 align-self-center" asp-action="ManageRoles" asp-route-id="@item.UserId">Manage Roles</a>
+
+            </ul>
+
+        </div>
+        
+    </div>
+}
+
+
+

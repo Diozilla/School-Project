@@ -1,0 +1,150 @@
+﻿@model FS02P2.Models.Student
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1>Edit</h1>
+
+<h4>Student</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+       <form id="editForm" asp-action="Edit">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <input type="hidden" asp-for="StudentID" />
+    <div class="form-group">
+        <label asp-for="FirstMidName" class="control-label"></label>
+        <input asp-for="FirstMidName" class="form-control" />
+        <span asp-validation-for="FirstMidName" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="LastName" class="control-label"></label>
+        <input asp-for="LastName" class="form-control" />
+        <span asp-validation-for="LastName" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="EnrollmentDate" class="control-label"></label>
+        <input asp-for="EnrollmentDate" class="form-control" />
+        <span asp-validation-for="EnrollmentDate" class="text-danger"></span>
+    </div>
+    <hr />
+    <h3>Courses</h3>                        
+   <div class="form-group">
+    <div class="col-md-offset-2 col-md-10">
+        <table>
+            <tr>
+                @{
+                    int cnt = 0;
+                    List<FS02P2.Models.SchoolViewModels.AssignedCourseData> courses = ViewBag.Courses;
+                    List<FS02P2.Models.SchoolViewModels.StudentCourseg> courseg = ViewBag.Courseg;
+
+                    foreach (var course in courses)
+                    {
+                        if (cnt++ % 1 == 0)
+                        {
+                            @:</tr><tr>
+                        }
+                        @:<th>
+                            <input type="checkbox"
+                                   name="selectedc"
+                                   value="@course.CourseID"
+                                   @(Html.Raw(course.Assigned ? "checked=\"checked\"" : "")) />
+                                   @course.CourseID @:  @course.Title
+                        @:</th>
+                        @:<td>
+                        
+                        var grade = courseg.FirstOrDefault(g => g.CourseID == course.CourseID);
+                        if (grade != null)
+                        {
+                            <select name="selectedg[@course.CourseID]">
+                                @foreach (Grade eValue in Enum.GetValues(typeof(Grade)))
+                                {
+                                    @:<option value="@eValue.ToString()" @(eValue == grade.Grade ? "selected" : "")>@eValue</option>
+                                }
+                            </select>
+                        }
+                        else
+                        {
+                            <select name="selectedg[@course.CourseID]">
+                                @foreach (Grade eValue in Enum.GetValues(typeof(Grade)))
+                                {
+                                    <option value="@eValue.ToString()">@eValue</option>
+                                }
+                            </select>
+                        }
+                    }
+                   
+                    @:</tr>
+                }
+        </table>
+    </div>
+</div>
+
+    @*<div class="form-group mt-3">
+        <div class="col-md-offset-2 col-md-10">
+            <table class="table">
+                <tr>
+                    @{
+                        int cnt = 0;
+                        List<FS02P2.Models.SchoolViewModels.AssignedCourseData> courses = ViewBag.Courses;
+                        List<FS02P2.Models.SchoolViewModels.StudentCourseg> courseg = ViewBag.Courseg;
+
+                        foreach (var course in courses)
+                        {
+                            if (cnt++ % 1 == 0)
+                            {
+                                @:</tr><tr>
+                            }
+                            <th>
+                                <input type="checkbox"
+                                       name="selectedCourses"
+                                       value="@course.CourseID"
+                                       @(Html.Raw(course.Assigned ? "checked=\"checked\"" : "")) />
+                                       @course.CourseID   @course.Title
+                            </th>
+                            <td>
+                                @{
+                                    var grade = courseg.FirstOrDefault(g => g.CourseID == course.CourseID)?.Grade;
+                                    if (grade != null)
+                                    {
+                                        <select name="selectedg[@course.CourseID]">
+                                            @foreach (Grade eValue in Enum.GetValues(typeof(Grade)))
+                                            {
+                                                @:<option value="@eValue.ToString()" @(eValue == grade ? "selected\"" : "")>@eValue</option>
+                                            }
+                                        </select>
+                                    }
+                                    else
+                                    {
+                                        <select name="selectedg[@course.CourseID]">
+                                            @foreach (Grade eValue in Enum.GetValues(typeof(Grade)))
+                                            {
+                                                <option value="@eValue.ToString()">@eValue</option>
+                                            }
+                                        </select>
+                                    }
+                                }
+                            </td>
+                        }
+                    }
+                </tr>
+            </table>
+        </div>
+    </div>*@
+    <div class="form-group">
+        <input type="submit" value="save" class="btn btn-primary"  />
+    </div>
+</form>
+
+
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

@@ -1,0 +1,52 @@
+﻿@model IEnumerable<Microsoft.AspNetCore.Identity.IdentityRole>
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Roles</h1>
+
+<form asp-action="CreateRole" class="container ">
+    <div class="row ">
+        <div class="form-group  col-3 mt-3 ">
+            <label class="form-label">Role Name:</label>
+            <input class="form-control p-1 " type="text" name="roleName">
+        </div>
+
+        <div class="col-3 mt-5">
+            <input class="btn btn-sm btn-warning " type="submit" value="Create Role">
+
+        </div>
+    </div>
+</form>
+
+@*<a class="btn btn-sm btn-warning" asp-action="CreateRole">Add new Role</a>*@
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>RoleID</th>
+            <th>Role Name</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var role in Model)
+        {
+            <tr>
+                <td>
+                    @role.Id
+                </td>
+                <td>
+                    @role.Name
+                </td>
+                <td><a class="btn btn-sm btn-danger" asp-action="DeleteRole" asp-route-id="@role.Id">Delete</a></td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@section Scripts{
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
